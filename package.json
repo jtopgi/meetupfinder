@@ -9,10 +9,13 @@
   },
   "dependencies": {
     "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
     "express": "^4.16.2",
     "express-handlebars": "^3.0.0",
     "express-session": "^1.15.6",
+    "meetup-api": "^1.4.30",
     "mysql": "^2.15.0",
-    "npm": "^5.6.0"
+    "npm": "^5.6.0",
+    "request": "^2.83.0"
   }
 }
