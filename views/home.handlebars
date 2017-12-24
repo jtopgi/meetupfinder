@@ -1,3 +1,5 @@
-{{#each events}}
-  {{name}}, {{time}} <br>
-{{/each}}
+<div class="list-group">
+  {{#each events}}
+    <a href="{{url}}" class="list-group-item">{{groupName}}<br>{{eventName}}, {{travelTime}} mins, start time {{startTime}}</a>
+  {{/each}}
+</div>
