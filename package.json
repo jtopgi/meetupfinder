@@ -8,16 +8,10 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "body-parser": "^1.18.2",
-    "bootstrap": "^3.3.7",
-    "cors": "^2.8.4",
+    "dotenv": "^4.0.0",
     "express": "^4.16.2",
     "express-handlebars": "^3.0.0",
-    "express-session": "^1.15.6",
-    "jquery": "^3.2.1",
-    "meetup-api": "^1.4.30",
     "moment": "^2.20.1",
-    "mysql": "^2.15.0",
     "npm": "^5.6.0",
     "request": "^2.83.0"
   }
