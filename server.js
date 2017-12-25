@@ -14,7 +14,7 @@ app.set('port', 3000);
 app.use(express.static('public'));
 
 app.get('/', function(req, res) {
-  var interval = moment.utc() + ',' + moment.utc().add(3,'days');
+  var interval = moment.utc() + ',' + moment.utc().add(1,'days');
   request('https://api.meetup.com/2/open_events?&sign=true&photo-host=public&zip=60657&time=' + interval + '&radius=10&key=' + process.env.meetupKey, async function(error, response, body) {
     var data = JSON.parse(body)
     var events = [];
@@ -52,7 +52,7 @@ function getTime(location) {
       if (JSON.parse(body).status == 'OK') {
         resolve(JSON.parse(body).routes[0].legs[0].duration.text.replace(/\D/g, ''));
       } else {
-        resolve(-1);
+        resolve("N/A");
       }
     });
   });
