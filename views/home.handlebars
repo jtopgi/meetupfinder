@@ -1,6 +1,10 @@
-<h1 id="date"></h1>
+<div id="date" style="font-size: 20px; font-weight: bold"></div>
 <div class="list-group">
   {{#each events}}
-    <a href="{{url}}" class="list-group-item"><h1>{{startTime}}</h1>{{groupName}}<br>{{eventName}}, {{travelTime}} mins, start time {{startTime}}</a>
+    <div class="row list-group-item" data-toggle="collapse" data-target="#{{@index}}">
+      <div class="col-sm-1" style="font-size: 16px; font-weight: bold">{{{startTime}}}</div>
+      <div class="col-sm-11"><b>{{groupName}}</b><br>{{eventName}}</div>
+    </div>
+    <div id="{{@index}}" class="collapse">{{{description}}}</div>
   {{/each}}
 </div>
