@@ -1,10 +1,21 @@
-<div id="date" style="font-size: 20px; font-weight: bold"></div>
+
+<form action="/">
+  Start Date
+  <input type="date" name="startDate">
+  End Date
+  <input type="date" name="endDate">
+  <input type="submit">
+</form>
+
 <div class="list-group">
-  {{#each events}}
-    <a href="#!" class="row list-group-item list-group-item-action" data-toggle="collapse" data-target="#{{@index}}">
-      <div class="col-sm-1" style="font-size: 16px; font-weight: bold">{{{startTime}}}</div>
-      <div class="col-sm-11"><b>{{groupName}}</b><br>{{eventName}}</div>
-    </a>
-    <div id="{{@index}}" class="collapse"><div style="padding:15px">{{{description}}}<a href="{{url}}" class="btn btn-primary" role="button">View Event</a></div></div>
+  {{#each dates}}
+    <div class="date" style="font-size: 20px; font-weight: bold">{{day}}</div>
+    {{#each events}}
+      <a href="#!" class="row list-group-item list-group-item-action" data-toggle="collapse" data-target="#{{@index}}">
+        <div class="col-sm-1" style="font-size: 16px; font-weight: bold">{{{startTime}}}</div>
+        <div class="col-sm-11"><b>{{groupName}}</b><br>{{eventName}}</div>
+      </a>
+      <div id="{{@index}}" class="collapse"><div style="padding:15px">{{{description}}}<a href="{{url}}" class="btn btn-primary" role="button">View Event</a></div></div>
+    {{/each}}
   {{/each}}
 </div>

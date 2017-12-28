@@ -1,1 +1,3 @@
-$('#date').html(new Date().toLocaleDateString("en-US"));
+$('.date').each(function(){
+  $(this).text(moment(parseInt($(this).text())).local().format('MM/DD'));
+});
