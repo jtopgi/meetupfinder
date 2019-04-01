@@ -1,3 +1,6 @@
+@import "/node_modules/bootstrap/dist/css/bootstrap.min.css";
+@import "/node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker3.standalone.min.css";
+
 img {
   width: 100%;
   max-width: 480px;

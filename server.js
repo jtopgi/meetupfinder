@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 var express = require('express');
 var request = require('request');
 var moment = require('moment');
@@ -6,19 +8,19 @@ var app = express();
 var handlebars = require('express-handlebars').create({
   defaultLayout: 'main'
 });
-require('dotenv').load();
 
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 app.set('port', 3000);
 app.use(express.static('public'));
+app.use('/node_modules', express.static(__dirname + '/node_modules'));
 
 app.get('/', function(req, res) {
   let today = moment().format("YYYYMMDD");
   let firstDate = moment(req.query.startDate || today, "YYYYMMDD").startOf('d').utc();
   let lastDate = moment(req.query.endDate || today, "YYYYMMDD").endOf('d').utc();
 
-  request('https://api.meetup.com/2/open_events?&sign=true&photo-host=public&zip=60657&time=' + firstDate + ',' + lastDate + '&radius=5&key=' + process.env.meetupKey, async function(error, response, body) {
+  request('https://api.meetup.com/2/open_events?&sign=true&photo-host=public&zip=60657&time=' + firstDate + ',' + lastDate + '&radius=2&key=' + process.env.meetupKey, async function(error, response, body) {
     if (error) throw error;
     let parsedBody = JSON.parse(body);
     let results = parsedBody.results;
@@ -39,7 +41,7 @@ app.get('/', function(req, res) {
       let location = results[i].venue.lat + ',' + results[i].venue.lon;
       let endTimeSecs = (results[i].time + results[i].duration || results[i].time + moment.duration(3, 'h')) / 1000;
       let travelTime = await getTime(location, endTimeSecs);
-      if (travelTime > 20 || travelTime == -1) continue;
+      if (travelTime > 30 || travelTime == -1) continue;
 
       let resultObj = {
         groupName: results[i].group.name,
