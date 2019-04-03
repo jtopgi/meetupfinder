@@ -1,24 +1,28 @@
-<h1>Meetup Finder</h1>
+<h1 class="text-center">Meetup Finder</h1>
 
-<form action="/" class="form-inline">
-  <div class="input-daterange form-group">
-    <input type="text" class="form-control" name="startDate">
-    <span>to</span>
-    <input type="text" class="form-control" name="endDate">
-    <button class="btn btn-primary" name="submit" type="submit">Submit</button>
+<form action="/">
+  <div class="form-group">
+    <input type="text" class="form-control datepicker" value="{{currentDate}}">
   </div>
+  <button class="btn btn-primary" name="submit" type="submit">Submit</button>
 </form>
 
+<div class="accordion" id="accordionExample">
+  {{#each events}}
+  <div class="card">
+    <div class="card-header" id="heading{{@index}}">
+      <h5 class="mb-0">
+        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{@index}}" aria-expanded="true" aria-controls="collapse{{@index}}">
+          {{name}}
+        </button>
+      </h5>
+    </div>
 
-<div class="list-group">
-  {{#each dates}}
-    <div class="date" style="font-size: 20px; font-weight: bold">{{day}}</div>
-    {{#each events}}
-      <a href="#!" class="row list-group-item list-group-item-action" data-toggle="collapse" data-target="#{{@index}}">
-        <div class="col-sm-1" style="font-size: 16px; font-weight: bold">{{{startTime}}}</div>
-        <div class="col-sm-11"><b>{{groupName}}</b><br>{{eventName}}</div>
-      </a>
-      <div id="{{@index}}" class="collapse"><div style="padding:15px">{{{description}}}<a href="{{url}}" class="btn btn-primary" role="button">View Event</a></div></div>
-    {{/each}}
+    <div id="collapse{{@index}}" class="collapse" aria-labelledby="heading{{@index}}" data-parent="#accordionExample">
+      <div class="card-body">
+        {{{description}}}
+      </div>
+    </div>
+  </div>
   {{/each}}
 </div>
