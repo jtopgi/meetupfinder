@@ -2,14 +2,19 @@ let request = require('request');
 let moment = require('moment');
 
 module.exports = function requestMeetup(date, zip, callback) {
-  let startTime = moment(date).valueOf();
+  let startTime = moment(date);
+
+  if (moment().startOf('day') != startTime.startOf('day')) {
+    startTime = startTime.startOf('day');
+  }
+  startTime = startTime.valueOf();
   let endTime = moment(date).endOf('day').valueOf();
 
   let resource =
     'https://api.meetup.com/2/open_events?&sign=true&photo-host=public' +
     `&zip=${zip}` +
     `&time=${startTime},${endTime}` +
-    '&radius=5' +
+    '&radius=3' +
     `&key=${process.env.meetupKey}`;
 
   request(resource, function(error, response, body) {
@@ -21,7 +26,8 @@ module.exports = function requestMeetup(date, zip, callback) {
       if (
         item.yes_rsvp_count == 0 ||
         item.waitlist_count > 0 ||
-        item.venue == undefined
+        item.venue == undefined ||
+        item.duration == undefined
       ) {continue;}
 
       events.push({
@@ -33,7 +39,10 @@ module.exports = function requestMeetup(date, zip, callback) {
         event_url: item.event_url,
         name: item.name,
         start_time: item.time / 1000,
-        end_time: (item.time + item.duration) / 1000
+        end_time: (item.time + item.duration) / 1000,
+        group: {
+          name: item.group.name
+        }
       });
     }
 
@@ -65,6 +74,7 @@ function restrictTransitTime(events, index, callback) {
     if (duration > MAXTRANSITTIME) {
       events.splice(index, 1);
     } else {
+      events[index].transit_time = Math.ceil(duration / 60);
       index++;
     }
 
