@@ -4,7 +4,10 @@ let express = require('express');
 let moment = require('moment');
 let app = express();
 let handlebars = require('express-handlebars').create({
-  defaultLayout: 'main'
+  defaultLayout: 'main',
+  helpers: {
+    timeFormat: function(epoch) { return moment.unix(epoch).format('h:mm a');}
+  }
 });
 
 app.engine('handlebars', handlebars.engine);
@@ -17,7 +20,7 @@ app.get("/", function(request, response) {
   let requestMeetup = require("./modules/requestMeetup.js");
 
   if (request.query.date) {
-    requestMeetup(request.query.date, 60657, function(events){
+    requestMeetup(request.query.date, 60614, function(events){
       response.render('home', {events: events});
     });
   } else {

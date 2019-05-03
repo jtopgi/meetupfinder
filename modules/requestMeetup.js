@@ -4,8 +4,8 @@ let moment = require('moment');
 module.exports = function requestMeetup(date, zip, callback) {
   let startTime = moment(date);
 
-  if (moment().startOf('day') != startTime.startOf('day')) {
-    startTime = startTime.startOf('day');
+  if (moment().startOf('day').isSame(startTime.startOf('day'))) {
+    startTime = moment();
   }
   startTime = startTime.valueOf();
   let endTime = moment(date).endOf('day').valueOf();
@@ -27,7 +27,9 @@ module.exports = function requestMeetup(date, zip, callback) {
         item.yes_rsvp_count == 0 ||
         item.waitlist_count > 0 ||
         item.venue == undefined ||
-        item.duration == undefined
+        item.duration == undefined ||
+        item.venue.lon == 0 ||
+        item.venue.lat == 0
       ) {continue;}
 
       events.push({
@@ -52,7 +54,7 @@ module.exports = function requestMeetup(date, zip, callback) {
 
 function restrictTransitTime(events, index, callback) {
   const destination = process.env.destination; //TODO: query client for destination
-  const MAXTRANSITTIME = 20 * 60; //20 minutes
+  const MAXTRANSITTIME = 25 * 60; //20 minutes
 
   if (index >= events.length) {
     callback(events);
@@ -70,13 +72,20 @@ function restrictTransitTime(events, index, callback) {
   request(resource, function(error, response, body) {
     if (error) throw error;
 
-    duration = JSON.parse(body).routes[0].legs[0].duration.value;
-    if (duration > MAXTRANSITTIME) {
+    if (JSON.parse(body).routes[0] == undefined){
       events.splice(index, 1);
-    } else {
-      events[index].transit_time = Math.ceil(duration / 60);
-      index++;
+    }  else {
+      let duration = JSON.parse(body).routes[0].legs[0].duration.value;
+
+      if (duration > MAXTRANSITTIME) {
+        events.splice(index, 1);
+      } else {
+        events[index].transit_time = Math.ceil(duration / 60);
+        index++;
+      }
     }
+
+
 
     restrictTransitTime(events, index, callback);
   });
